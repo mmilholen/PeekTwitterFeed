@@ -13,6 +13,7 @@
 		AB20C8681CD530DB00695B74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB20C8671CD530DB00695B74 /* Assets.xcassets */; };
 		AB20C86B1CD530DB00695B74 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB20C8691CD530DB00695B74 /* LaunchScreen.storyboard */; };
 		AB20C8761CD530DB00695B74 /* PeekTwitterFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB20C8751CD530DB00695B74 /* PeekTwitterFeedTests.swift */; };
+		F75987C05CE867DCFB82D618 /* libPods-PeekTwitterFeed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2487CF414053A3DAF80DA030 /* libPods-PeekTwitterFeed.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +27,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		2487CF414053A3DAF80DA030 /* libPods-PeekTwitterFeed.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PeekTwitterFeed.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7A4151F90BA1C91A2F25588 /* Pods-PeekTwitterFeed.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PeekTwitterFeed.release.xcconfig"; path = "Pods/Target Support Files/Pods-PeekTwitterFeed/Pods-PeekTwitterFeed.release.xcconfig"; sourceTree = "<group>"; };
 		AB20C85D1CD530DB00695B74 /* PeekTwitterFeed.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PeekTwitterFeed.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB20C8601CD530DB00695B74 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		AB20C8621CD530DB00695B74 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -36,6 +39,7 @@
 		AB20C8711CD530DB00695B74 /* PeekTwitterFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeekTwitterFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB20C8751CD530DB00695B74 /* PeekTwitterFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeekTwitterFeedTests.swift; sourceTree = "<group>"; };
 		AB20C8771CD530DB00695B74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		F5F7A30C9DE9FF2781385138 /* Pods-PeekTwitterFeed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PeekTwitterFeed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PeekTwitterFeed/Pods-PeekTwitterFeed.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -43,6 +47,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F75987C05CE867DCFB82D618 /* libPods-PeekTwitterFeed.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,12 +61,31 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5862E4ACAE13920B8B776FF7 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				2487CF414053A3DAF80DA030 /* libPods-PeekTwitterFeed.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		5FC59F41B9D7FBB388DA065E /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F5F7A30C9DE9FF2781385138 /* Pods-PeekTwitterFeed.debug.xcconfig */,
+				A7A4151F90BA1C91A2F25588 /* Pods-PeekTwitterFeed.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		AB20C8541CD530DA00695B74 = {
 			isa = PBXGroup;
 			children = (
 				AB20C85F1CD530DB00695B74 /* PeekTwitterFeed */,
 				AB20C8741CD530DB00695B74 /* PeekTwitterFeedTests */,
 				AB20C85E1CD530DB00695B74 /* Products */,
+				5FC59F41B9D7FBB388DA065E /* Pods */,
+				5862E4ACAE13920B8B776FF7 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -103,9 +127,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = AB20C87A1CD530DB00695B74 /* Build configuration list for PBXNativeTarget "PeekTwitterFeed" */;
 			buildPhases = (
+				54443BC6F0902BE56CADF64C /* Check Pods Manifest.lock */,
 				AB20C8591CD530DA00695B74 /* Sources */,
 				AB20C85A1CD530DA00695B74 /* Frameworks */,
 				AB20C85B1CD530DA00695B74 /* Resources */,
+				49C055C9CF222E2E74385B37 /* Embed Pods Frameworks */,
+				A50C22EB7552B5381C3FD609 /* Copy Pods Resources */,
+				AB9AAB271CD53EC700F07C3F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -191,6 +219,67 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		49C055C9CF222E2E74385B37 /* Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PeekTwitterFeed/Pods-PeekTwitterFeed-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		54443BC6F0902BE56CADF64C /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		A50C22EB7552B5381C3FD609 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-PeekTwitterFeed/Pods-PeekTwitterFeed-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		AB9AAB271CD53EC700F07C3F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 70522266a98815717089ea432a5afe1d64727179 420de092fb47e4ef061b42c3dac64d3e9943fa547487d3ee3962ebb8e9323f29";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		AB20C8591CD530DA00695B74 /* Sources */ = {
@@ -327,25 +416,31 @@
 		};
 		AB20C87B1CD530DB00695B74 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F5F7A30C9DE9FF2781385138 /* Pods-PeekTwitterFeed.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = PeekTwitterFeed/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mmilholen.PeekTwitterFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Debug;
 		};
 		AB20C87C1CD530DB00695B74 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = A7A4151F90BA1C91A2F25588 /* Pods-PeekTwitterFeed.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				INFOPLIST_FILE = PeekTwitterFeed/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.mmilholen.PeekTwitterFeed;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
 			};
 			name = Release;
 		};
@@ -392,6 +487,7 @@
 				AB20C87C1CD530DB00695B74 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		AB20C87D1CD530DB00695B74 /* Build configuration list for PBXNativeTarget "PeekTwitterFeedTests" */ = {
 			isa = XCConfigurationList;
@@ -400,6 +496,7 @@
 				AB20C87F1CD530DB00695B74 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
