@@ -39,6 +39,12 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.addSubview(refreshControl)
     }
     
+    override func didReceiveMemoryWarning() {
+        super.didReceiveMemoryWarning()
+    }
+    
+    // MARK: - Data Access
+    
     func fetchTweets() {
         weak var weakSelf = self
         twitterFacade.fetchTweets {
@@ -48,7 +54,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             } else {
                 weakSelf?.tweets = tweets
             }
-            dispatch_async(dispatch_get_main_queue(), { 
+            dispatch_async(dispatch_get_main_queue(), {
                 weakSelf?.tableView.reloadData()
             })
         }
@@ -84,9 +90,10 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             })
         }
     }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
+    
+    func removeTweet(tweet: TWTRTweet) {
+        tweets = tweets.filter { $0 !== tweet }
+        tableView.reloadData()
     }
     
     // MARK: - UITableViewDataSource
@@ -114,6 +121,18 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         let bottom = scrollView.contentOffset.y + scrollView.bounds.size.height
         if bottom >= scrollView.contentSize.height { // did scroll to bottom
             fetchNextTweets()
+        }
+    }
+    
+    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        return true
+    }
+    
+    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        switch editingStyle {
+        case .Delete:
+            removeTweet(tweets[indexPath.row])
+        default: break // Nothing to do
         }
     }
 
