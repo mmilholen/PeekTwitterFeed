@@ -13,6 +13,7 @@
 		AB20C8681CD530DB00695B74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB20C8671CD530DB00695B74 /* Assets.xcassets */; };
 		AB20C86B1CD530DB00695B74 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB20C8691CD530DB00695B74 /* LaunchScreen.storyboard */; };
 		AB20C8761CD530DB00695B74 /* PeekTwitterFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB20C8751CD530DB00695B74 /* PeekTwitterFeedTests.swift */; };
+		AB6680231CD6B64300F7E712 /* TwitterFacade.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB6680221CD6B64300F7E712 /* TwitterFacade.swift */; };
 		AB9AAB2A1CD585D400F07C3F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB9AAB291CD585D400F07C3F /* CoreData.framework */; };
 		F75987C05CE867DCFB82D618 /* libPods-PeekTwitterFeed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2487CF414053A3DAF80DA030 /* libPods-PeekTwitterFeed.a */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,7 @@
 		AB20C8711CD530DB00695B74 /* PeekTwitterFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeekTwitterFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB20C8751CD530DB00695B74 /* PeekTwitterFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeekTwitterFeedTests.swift; sourceTree = "<group>"; };
 		AB20C8771CD530DB00695B74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB6680221CD6B64300F7E712 /* TwitterFacade.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TwitterFacade.swift; sourceTree = "<group>"; };
 		AB9AAB291CD585D400F07C3F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F5F7A30C9DE9FF2781385138 /* Pods-PeekTwitterFeed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PeekTwitterFeed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PeekTwitterFeed/Pods-PeekTwitterFeed.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -107,6 +109,7 @@
 			children = (
 				AB20C8601CD530DB00695B74 /* AppDelegate.swift */,
 				AB20C8621CD530DB00695B74 /* ViewController.swift */,
+				AB6680221CD6B64300F7E712 /* TwitterFacade.swift */,
 				AB20C8641CD530DB00695B74 /* Main.storyboard */,
 				AB20C8671CD530DB00695B74 /* Assets.xcassets */,
 				AB20C8691CD530DB00695B74 /* LaunchScreen.storyboard */,
@@ -290,6 +293,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB6680231CD6B64300F7E712 /* TwitterFacade.swift in Sources */,
 				AB20C8631CD530DB00695B74 /* ViewController.swift in Sources */,
 				AB20C8611CD530DB00695B74 /* AppDelegate.swift in Sources */,
 			);

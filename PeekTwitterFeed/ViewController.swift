@@ -15,13 +15,8 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     @IBOutlet weak var tableView: UITableView!
     var refreshControl: UIRefreshControl!
     
-    var client: TWTRAPIClient!
+    let twitterFacade = TwitterFacade()
     var tweets = [TWTRTweet]()
-    var locked = false
-    var nextResultsUrl = ""
-    var refreshUrl = ""
-    
-    let SearchUrl = "https://api.twitter.com/1.1/search/tweets.json"
     
     // MARK: - Life Cycle
 
@@ -30,7 +25,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         
         initRefreshControl()
         
-        authenticate { error in
+        twitterFacade.authenticate { error in
             if let _ = error { return }
             self.fetchTweets()
         }
@@ -44,168 +39,49 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         tableView.addSubview(refreshControl)
     }
     
-    private func authenticate(completion: ((authError: NSError?) -> Void)?) {
-        weak var weakSelf = self
-        Twitter.sharedInstance().logInWithCompletion { session, error in
-            if let s = session {
-                weakSelf?.client = TWTRAPIClient(userID: s.userID)
-            } else if let e = error {
-                print("error: \(e.localizedDescription)");
-            }
-            
-            if let c = completion {
-                c(authError: error)
-            }
-        }
-    }
-    
     func fetchTweets() {
-        guard !locked else { return }
-        locked = true
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        
         weak var weakSelf = self
-        var clientError: NSError?
-        let request = client.URLRequestWithMethod("GET", URL: "\(SearchUrl)?q=%40Peek", parameters: [:], error: &clientError)
-        client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
-            // guard block connection failure
-            if let ce = connectionError {
-                print("Error: \(ce)")
-                dispatch_async(dispatch_get_main_queue(), {
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                })
-                weakSelf?.locked = false
-                return
+        twitterFacade.fetchTweets {
+            (tweets, error) -> Void in
+            if let _ = error {
+                // Nothing to do
+            } else {
+                weakSelf?.tweets = tweets
             }
-            
-            // parse results
-            do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-                if let metadata = json["search_metadata"] {
-                    if let nru = metadata["next_results"] as? String {
-                        weakSelf?.nextResultsUrl = nru
-                    } else {
-                        weakSelf?.nextResultsUrl = ""
-                    }
-                    if let ru = metadata["refresh_url"] as? String {
-                        weakSelf?.refreshUrl = ru
-                    } else {
-                        weakSelf?.refreshUrl = ""
-                    }
-                }
-                if let statuses = json["statuses"] as? [AnyObject] {
-                    weakSelf?.tweets = TWTRTweet.tweetsWithJSONArray(statuses) as! [TWTRTweet]
-                    dispatch_async(dispatch_get_main_queue(), {
-                        weakSelf?.tableView.reloadData()
-                    })
-                }
-            } catch let jsonError as NSError {
-                print("json error: \(jsonError.localizedDescription)")
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            dispatch_async(dispatch_get_main_queue(), { 
+                weakSelf?.tableView.reloadData()
             })
-            weakSelf?.locked = false
-        }
-    }
-    
-    func refreshTweets() {
-        guard !locked && !refreshUrl.isEmpty else { return }
-        locked = true
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        
-        weak var weakSelf = self
-        var clientError: NSError?
-        let request = client.URLRequestWithMethod("GET", URL: "\(SearchUrl)\(refreshUrl)", parameters: [:], error: &clientError)
-        client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
-            // guard block connection failure
-            if let ce = connectionError {
-                print("Error: \(ce)")
-                dispatch_async(dispatch_get_main_queue(), {
-                    weakSelf?.refreshControl.endRefreshing()
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                })
-                weakSelf?.locked = false
-                return
-            }
-            
-            // parse results
-            do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-                
-                // parse search metadata
-                if let metadata = json["search_metadata"], let ru = metadata["refresh_url"] as? String {
-                    weakSelf?.refreshUrl = ru
-                } else {
-                    weakSelf?.refreshUrl = ""
-                }
-                
-                // parse tweets
-                if let statuses = json["statuses"] as? [AnyObject] {
-                    let t = TWTRTweet.tweetsWithJSONArray(statuses) as! [TWTRTweet]
-                    weakSelf?.tweets = t + (weakSelf?.tweets)!
-                    dispatch_async(dispatch_get_main_queue(), {
-                        weakSelf?.tableView.reloadData()
-                    })
-                }
-            } catch let jsonError as NSError {
-                print("json error: \(jsonError.localizedDescription)")
-            }
-            
-            dispatch_async(dispatch_get_main_queue(), {
-                weakSelf?.refreshControl.endRefreshing()
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-            })
-            weakSelf?.locked = false
         }
     }
     
     func fetchNextTweets() {
-        guard !locked && !nextResultsUrl.isEmpty else { return }
-        locked = true
-        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
-        
         weak var weakSelf = self
-        var clientError: NSError?
-        let request = client.URLRequestWithMethod("GET", URL: "\(SearchUrl)\(nextResultsUrl)", parameters: [:], error: &clientError)
-        client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
-            // guard block connection failure
-            if let ce = connectionError {
-                print("Error: \(ce)")
-                dispatch_async(dispatch_get_main_queue(), {
-                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
-                })
-                weakSelf?.locked = false
-                return
+        twitterFacade.fetchNextTweets {
+            (tweets, error) -> Void in
+            if let _ = error {
+                // Nothing to do
+            } else {
+                weakSelf?.tweets.appendContentsOf(tweets)
             }
-            
-            // parse results
-            do {
-                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-                
-                // parse search metadata
-                if let metadata = json["search_metadata"], let nru = metadata["next_results"] as? String {
-                    weakSelf?.nextResultsUrl = nru
-                } else {
-                    weakSelf?.nextResultsUrl = ""
-                }
-                
-                // parse tweets
-                if let statuses = json["statuses"] as? [AnyObject] {
-                    weakSelf?.tweets.appendContentsOf(TWTRTweet.tweetsWithJSONArray(statuses) as! [TWTRTweet])
-                    dispatch_async(dispatch_get_main_queue(), {
-                        weakSelf?.tableView.reloadData()
-                    })
-                }
-            } catch let jsonError as NSError {
-                print("json error: \(jsonError.localizedDescription)")
-            }
-            
             dispatch_async(dispatch_get_main_queue(), {
-                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                weakSelf?.tableView.reloadData()
             })
-            weakSelf?.locked = false
+        }
+    }
+    
+    func refreshTweets() {
+        weak var weakSelf = self
+        twitterFacade.refreshTweets {
+            (tweets, error) -> Void in
+            if let _ = error {
+                // Nothing to do
+            } else {
+                weakSelf?.tweets = tweets + (weakSelf?.tweets)! // prepend search results
+            }
+            dispatch_async(dispatch_get_main_queue(), {
+                weakSelf?.refreshControl.endRefreshing()
+                weakSelf?.tableView.reloadData()
+            })
         }
     }
 
@@ -236,7 +112,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     func scrollViewDidScroll(scrollView: UIScrollView) {
         let bottom = scrollView.contentOffset.y + scrollView.bounds.size.height
-        if bottom >= scrollView.contentSize.height {
+        if bottom >= scrollView.contentSize.height { // did scroll to bottom
             fetchNextTweets()
         }
     }
