@@ -8,7 +8,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="PeekTwitterFeed" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController automaticallyAdjustsScrollViewInsets="NO" id="BYZ-38-t0r" customClass="ViewController" customModule="PeekTwitterFeed" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -16,8 +16,27 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="rB4-sr-Itr">
+                                <rect key="frame" x="0.0" y="20" width="600" height="580"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="BYZ-38-t0r" id="Xoo-SD-119"/>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Ljj-m5-23z"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="rB4-sr-Itr" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="COf-Qd-eUe"/>
+                            <constraint firstItem="rB4-sr-Itr" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="W16-y4-hxM"/>
+                            <constraint firstAttribute="trailing" secondItem="rB4-sr-Itr" secondAttribute="trailing" id="XBp-iC-fL0"/>
+                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="rB4-sr-Itr" secondAttribute="bottom" id="Yeg-BF-llO"/>
+                        </constraints>
                     </view>
+                    <connections>
+                        <outlet property="tableView" destination="rB4-sr-Itr" id="PQk-zo-cq1"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

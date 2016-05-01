@@ -13,6 +13,7 @@
 		AB20C8681CD530DB00695B74 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AB20C8671CD530DB00695B74 /* Assets.xcassets */; };
 		AB20C86B1CD530DB00695B74 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AB20C8691CD530DB00695B74 /* LaunchScreen.storyboard */; };
 		AB20C8761CD530DB00695B74 /* PeekTwitterFeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB20C8751CD530DB00695B74 /* PeekTwitterFeedTests.swift */; };
+		AB9AAB2A1CD585D400F07C3F /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AB9AAB291CD585D400F07C3F /* CoreData.framework */; };
 		F75987C05CE867DCFB82D618 /* libPods-PeekTwitterFeed.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2487CF414053A3DAF80DA030 /* libPods-PeekTwitterFeed.a */; };
 /* End PBXBuildFile section */
 
@@ -39,6 +40,7 @@
 		AB20C8711CD530DB00695B74 /* PeekTwitterFeedTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PeekTwitterFeedTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB20C8751CD530DB00695B74 /* PeekTwitterFeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeekTwitterFeedTests.swift; sourceTree = "<group>"; };
 		AB20C8771CD530DB00695B74 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AB9AAB291CD585D400F07C3F /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		F5F7A30C9DE9FF2781385138 /* Pods-PeekTwitterFeed.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PeekTwitterFeed.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PeekTwitterFeed/Pods-PeekTwitterFeed.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -47,6 +49,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				AB9AAB2A1CD585D400F07C3F /* CoreData.framework in Frameworks */,
 				F75987C05CE867DCFB82D618 /* libPods-PeekTwitterFeed.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -64,6 +67,7 @@
 		5862E4ACAE13920B8B776FF7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				AB9AAB291CD585D400F07C3F /* CoreData.framework */,
 				2487CF414053A3DAF80DA030 /* libPods-PeekTwitterFeed.a */,
 			);
 			name = Frameworks;
