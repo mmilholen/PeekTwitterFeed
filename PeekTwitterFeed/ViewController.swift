@@ -13,6 +13,7 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     
     // MARK: - UI Elements
     @IBOutlet weak var tableView: UITableView!
+    var refreshControl: UIRefreshControl!
     
     var client: TWTRAPIClient!
     var tweets = [TWTRTweet]()
@@ -27,24 +28,38 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        authenticate {
+        initRefreshControl()
+        
+        authenticate { error in
+            if let _ = error { return }
             self.fetchTweets()
         }
     }
     
-    private func authenticate(completion: (() -> Void)?) {
+    private func initRefreshControl() {
+        refreshControl = UIRefreshControl()
+        refreshControl.backgroundColor = UIColor.yellowColor()
+        refreshControl.tintColor = UIColor.purpleColor()
+        refreshControl.addTarget(self, action: #selector(ViewController.refreshTweets), forControlEvents: .ValueChanged)
+        tableView.addSubview(refreshControl)
+    }
+    
+    private func authenticate(completion: ((authError: NSError?) -> Void)?) {
         weak var weakSelf = self
         Twitter.sharedInstance().logInWithCompletion { session, error in
-            if let s = session, c = completion {
+            if let s = session {
                 weakSelf?.client = TWTRAPIClient(userID: s.userID)
-                c()
             } else if let e = error {
                 print("error: \(e.localizedDescription)");
+            }
+            
+            if let c = completion {
+                c(authError: error)
             }
         }
     }
     
-    private func fetchTweets() {
+    func fetchTweets() {
         guard !locked else { return }
         locked = true
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
@@ -66,7 +81,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             // parse results
             do {
                 let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-//                print("json: \(json)")
                 if let metadata = json["search_metadata"] {
                     if let nru = metadata["next_results"] as? String {
                         weakSelf?.nextResultsUrl = nru
@@ -96,7 +110,58 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
         }
     }
     
-    private func fetchNextTweets() {
+    func refreshTweets() {
+        guard !locked && !refreshUrl.isEmpty else { return }
+        locked = true
+        UIApplication.sharedApplication().networkActivityIndicatorVisible = true
+        
+        weak var weakSelf = self
+        var clientError: NSError?
+        let request = client.URLRequestWithMethod("GET", URL: "\(SearchUrl)\(refreshUrl)", parameters: [:], error: &clientError)
+        client.sendTwitterRequest(request) { (response, data, connectionError) -> Void in
+            // guard block connection failure
+            if let ce = connectionError {
+                print("Error: \(ce)")
+                dispatch_async(dispatch_get_main_queue(), {
+                    weakSelf?.refreshControl.endRefreshing()
+                    UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+                })
+                weakSelf?.locked = false
+                return
+            }
+            
+            // parse results
+            do {
+                let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
+                
+                // parse search metadata
+                if let metadata = json["search_metadata"], let ru = metadata["refresh_url"] as? String {
+                    weakSelf?.refreshUrl = ru
+                } else {
+                    weakSelf?.refreshUrl = ""
+                }
+                
+                // parse tweets
+                if let statuses = json["statuses"] as? [AnyObject] {
+                    let t = TWTRTweet.tweetsWithJSONArray(statuses) as! [TWTRTweet]
+                    weakSelf?.tweets = t + (weakSelf?.tweets)!
+                    dispatch_async(dispatch_get_main_queue(), {
+                        weakSelf?.tableView.reloadData()
+                    })
+                }
+            } catch let jsonError as NSError {
+                print("json error: \(jsonError.localizedDescription)")
+            }
+            
+            dispatch_async(dispatch_get_main_queue(), {
+                weakSelf?.refreshControl.endRefreshing()
+                UIApplication.sharedApplication().networkActivityIndicatorVisible = false
+            })
+            weakSelf?.locked = false
+        }
+    }
+    
+    func fetchNextTweets() {
         guard !locked && !nextResultsUrl.isEmpty else { return }
         locked = true
         UIApplication.sharedApplication().networkActivityIndicatorVisible = true
@@ -118,7 +183,6 @@ class ViewController: UIViewController, UITableViewDelegate, UITableViewDataSour
             // parse results
             do {
                 let json = try NSJSONSerialization.JSONObjectWithData(data!, options: .MutableContainers) as! NSDictionary
-//                print("json: \(json)")
                 
                 // parse search metadata
                 if let metadata = json["search_metadata"], let nru = metadata["next_results"] as? String {
